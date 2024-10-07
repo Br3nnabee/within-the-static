@@ -1,0 +1,18 @@
+# Cargo build artifacts and cache
+target/
+*.compiled
+
+# IDE-specific files and directories
+/.idea/
+/.vscode/
+
+# OS-specific files and directories
+.DS_Store
+Thumbs.db
+
+# Editor temporary files and backups
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
