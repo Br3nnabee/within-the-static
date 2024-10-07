@@ -1,13 +1,14 @@
 use crate::render::{despawn_screen, OnGameScreen};
 use bevy::prelude::*;
+use bevy_ecs_tiled::prelude::*;
+
 pub struct Game {}
 
 impl Plugin for Game {
     fn build(&self, app: &mut App) {
         app.insert_resource(DisplayQuality::Medium);
         app.insert_resource(Volume(7));
-
-        app.add_systems(Update, game.run_if(in_state(GameState::Game)));
+        app.add_systems(OnEnter(GameState::Game), init_game);
         app.add_systems(OnExit(GameState::Game), despawn_screen::<OnGameScreen>);
         app.init_state::<GameState>();
     }
@@ -33,15 +34,10 @@ pub enum GameState {
     Game,
 }
 
-#[derive(Resource, Deref, DerefMut)]
-pub struct GameTimer(pub Timer);
-
-fn game(
-    time: Res<Time>,
-    mut game_state: ResMut<NextState<GameState>>,
-    mut timer: ResMut<GameTimer>,
-) {
-    if timer.tick(time.delta()).finished() {
-        game_state.set(GameState::Menu);
-    }
+fn init_game(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let map_handle: Handle<TiledMap> = asset_server.load("map.tmx");
+    commands.spawn(TiledMapBundle {
+        tiled_map: map_handle,
+        ..Default::default()
+    });
 }

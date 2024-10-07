@@ -611,6 +611,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ecs_tiled"
+version = "0.3.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1ca4020354ae8782262201feb1c49a39ed480719d9b0371099171d614adf7fc2"
+dependencies = [
+ "bevy",
+ "bevy_ecs_tilemap",
+ "futures-lite",
+ "log",
+ "thiserror",
+ "tiled",
+]
+
+[[package]]
+name = "bevy_ecs_tilemap"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d880047f5deaf5166ffc08238125a4ccbd2837f781ca6525fa200fcf5785ba3b"
+dependencies = [
+ "bevy",
+ "log",
+ "regex",
+]
+
+[[package]]
 name = "bevy_egui"
 version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3828,6 +3853,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiled"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afffabdd4f2bb34ded7c7aa406fe027843e15c5489cff14df902366bc5d7a831"
+dependencies = [
+ "base64 0.22.1",
+ "flate2",
+ "xml-rs",
+ "zstd",
+]
+
+[[package]]
 name = "tiny-skia"
 version = "0.11.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4855,6 +4892,8 @@ version = "0.1.0"
 dependencies = [
  "bevy",
  "bevy-inspector-egui",
+ "bevy_ecs_tiled",
+ "bevy_ecs_tilemap",
  "chrono",
  "leafwing-input-manager",
 ]
@@ -4946,4 +4985,32 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.79",
+]
+
+[[package]]
+name = "zstd"
+version = "0.13.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fcf2b778a664581e31e389454a7072dab1647606d44f7feea22cd5abb9c9f3f9"
+dependencies = [
+ "zstd-safe",
+]
+
+[[package]]
+name = "zstd-safe"
+version = "7.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "54a3ab4db68cea366acc5c897c7b4d4d1b8994a9cd6e6f841f8964566a419059"
+dependencies = [
+ "zstd-sys",
+]
+
+[[package]]
+name = "zstd-sys"
+version = "2.0.13+zstd.1.5.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "38ff0f21cfee8f97d94cef41359e0c89aa6113028ab0291aa8ca0038995a95aa"
+dependencies = [
+ "cc",
+ "pkg-config",
 ]

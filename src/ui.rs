@@ -1,10 +1,6 @@
-use crate::game::{DisplayQuality, GameState, GameTimer, Volume};
-use crate::render::{despawn_screen, OnGameScreen};
-use bevy::{
-    app::AppExit,
-    color::palettes::css::{BLUE, CRIMSON, LIME},
-    prelude::*,
-};
+use crate::game::{DisplayQuality, GameState, Volume};
+use crate::render::despawn_screen;
+use bevy::{app::AppExit, color::palettes::css::CRIMSON, prelude::*};
 
 pub struct UI {}
 
@@ -13,7 +9,6 @@ impl Plugin for UI {
         app.add_systems(OnEnter(GameState::Splash), splash_setup);
         app.add_systems(Update, splash_countdown.run_if(in_state(GameState::Splash)));
         app.add_systems(OnExit(GameState::Splash), despawn_screen::<OnSplashScreen>);
-        app.add_systems(OnEnter(GameState::Game), init_game_info);
         app.add_systems(OnEnter(GameState::Menu), menu_setup)
             .add_systems(OnEnter(MenuState::Main), main_menu_setup)
             .add_systems(OnExit(MenuState::Main), despawn_screen::<OnMainMenuScreen>)
@@ -96,89 +91,6 @@ fn splash_countdown(
     if timer.tick(time.delta()).finished() {
         game_state.set(GameState::Menu);
     }
-}
-
-fn init_game_info(
-    mut commands: Commands,
-    display_quality: Res<DisplayQuality>,
-    volume: Res<Volume>,
-) {
-    commands
-        .spawn((
-            NodeBundle {
-                style: Style {
-                    width: Val::Percent(100.0),
-                    height: Val::Percent(100.0),
-                    // center children
-                    align_items: AlignItems::Center,
-                    justify_content: JustifyContent::Center,
-                    ..default()
-                },
-                ..default()
-            },
-            OnGameScreen,
-        ))
-        .with_children(|parent| {
-            parent
-                .spawn(NodeBundle {
-                    style: Style {
-                        flex_direction: FlexDirection::Column,
-                        align_items: AlignItems::Center,
-                        ..default()
-                    },
-                    background_color: Color::BLACK.into(),
-                    ..default()
-                })
-                .with_children(|parent| {
-                    parent.spawn(
-                        TextBundle::from_section(
-                            "Will be back to the menu shortly...",
-                            TextStyle {
-                                font_size: 80.0,
-                                color: TEXT_COLOR,
-                                ..default()
-                            },
-                        )
-                        .with_style(Style {
-                            margin: UiRect::all(Val::Px(50.0)),
-                            ..default()
-                        }),
-                    );
-                    parent.spawn(
-                        TextBundle::from_sections([
-                            TextSection::new(
-                                format!("quality: {:?}", *display_quality),
-                                TextStyle {
-                                    font_size: 60.0,
-                                    color: BLUE.into(),
-                                    ..default()
-                                },
-                            ),
-                            TextSection::new(
-                                " - ",
-                                TextStyle {
-                                    font_size: 60.0,
-                                    color: TEXT_COLOR,
-                                    ..default()
-                                },
-                            ),
-                            TextSection::new(
-                                format!("volume: {:?}", *volume),
-                                TextStyle {
-                                    font_size: 60.0,
-                                    color: LIME.into(),
-                                    ..default()
-                                },
-                            ),
-                        ])
-                        .with_style(Style {
-                            margin: UiRect::all(Val::Px(50.0)),
-                            ..default()
-                        }),
-                    );
-                });
-        });
-    commands.insert_resource(GameTimer(Timer::from_seconds(5.0, TimerMode::Once)));
 }
 
 // State used for the current menu screen
