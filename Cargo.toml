@@ -6,3 +6,5 @@ edition = "2021"
 [dependencies]
 bevy = "0.14.2"
 chrono = "0.4.9"
+leafwing-input-manager = "0.15.1"
+bevy-inspector-egui = "0.26.0"
